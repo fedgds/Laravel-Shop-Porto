@@ -25,13 +25,11 @@
                                             <a href="product.html" class="product-image">
                                                 <img src="{{asset('storage/images')}}/{{$value['image']}}" alt="product" width="50px">
                                             </a>
-
-                                            <a href="#" class="btn-remove icon-cancel" title="Remove Product"></a>
                                         </figure>
                                     </td>
                                     <td class="product-col">
                                         <h5 class="product-title">
-                                            <a href="product.html">{{$value['name']}}</a>
+                                            <a href="">{{$value['name']}}</a>
                                         </h5>
                                     </td>
                                     <td>{{number_format($value['price'])}} VND</td>
@@ -40,7 +38,7 @@
                                             <input class="horizontal-quantity form-control" type="text" value="{{$value['quantity']}}">
                                         </div><!-- End .product-single-qty -->
                                     </td>
-                                    <td class="text-right"><span class="subtotal-price">{{number_format($value['price'] * $value['quantity'])}}</span></td>
+                                    <td class="text-right"><span class="subtotal-price">{{number_format($value['price'] * $value['quantity'])}} VND</span></td>
                                 </tr>
                             @endforeach
 

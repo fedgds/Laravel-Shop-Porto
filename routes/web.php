@@ -28,6 +28,11 @@ Route::get('/register', [UserController::class, 'register'])->name('register');
 Route::post('/register', [UserController::class, 'postRegister']);
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
+Route::get('/wishlist', [HomeController::class, 'wishList'])->name('wishlist');
+Route::get('/blog', [HomeController::class, 'blog'])->name('blog');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/add-cart', [CartController::class, 'add'])->name('cart.add');
 

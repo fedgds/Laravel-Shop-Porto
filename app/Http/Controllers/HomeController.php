@@ -32,4 +32,16 @@ class HomeController extends Controller
 
         return view('clients.detail',compact('product', 'related', 'newProduct', 'featuredProduct'));
     }
+    public function wishList(){
+        return view('clients.wishlist');
+    }
+    public function blog(){
+        return view('clients.blog');
+    }
+    public function about(){
+        return view('clients.about');
+    }
+    public function contact(){
+        return view('clients.contact');
+    }
 }

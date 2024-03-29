@@ -1,4 +1,5 @@
 <?php
+use App\Models\Category;
 function categoryParent($categories, $selected = 0, $parentId = 0, $character = ''){
     foreach($categories as $key => $item){
         if($item->parent_id == $parentId) {
@@ -13,6 +14,10 @@ function categoryParent($categories, $selected = 0, $parentId = 0, $character = 
             categoryParent($categories, $selected, $item->id, $character . '---');
         }
     }
+}
+function getAllCategories(){
+    $categories = new Category;
+    return $categories->all();
 }
 function percent($sale, $price){
     return round(($price - $sale)*100/$price);

@@ -95,10 +95,10 @@
                             <div class="header-menu">
                                 <ul>
                                     <li><a href="dashboard.html">My Account</a></li>
-                                    <li><a href="demo1-contact.html">Contact Us</a></li>
-                                    <li><a href="wishlist.html">My Wishlist</a></li>
+                                    <li><a href="{{route('contact')}}">Contact Us</a></li>
+                                    <li><a href="{{route('wishlist')}}">My Wishlist</a></li>
                                     <li><a href="#">Site Map</a></li>
-                                    <li><a href="cart.html">Cart</a></li>
+                                    <li><a href="{{route('cart.index')}}">Cart</a></li>
                                     @if ((!empty(Auth::check())))
                                         <li><a href="{{route('logout')}}">Log Out</a></li>
                                     @else
@@ -146,22 +146,14 @@
                                     <div class="select-custom">
                                         <select id="cat" name="cat">
                                             <option value="">All Categories</option>
-                                            <option value="4">Fashion</option>
-                                            <option value="12">- Women</option>
-                                            <option value="13">- Men</option>
-                                            <option value="66">- Jewellery</option>
-                                            <option value="67">- Kids Fashion</option>
-                                            <option value="5">Electronics</option>
-                                            <option value="21">- Smart TVs</option>
-                                            <option value="22">- Cameras</option>
-                                            <option value="63">- Games</option>
-                                            <option value="7">Home &amp; Garden</option>
-                                            <option value="11">Motors</option>
-                                            <option value="31">- Cars and Trucks</option>
-                                            <option value="32">- Motorcycles &amp; Powersports</option>
-                                            <option value="33">- Parts &amp; Accessories</option>
-                                            <option value="34">- Boats</option>
-                                            <option value="57">- Auto Tools &amp; Supplies</option>
+                                            @foreach (getAllCategories() as $category)
+                                                @if ($category->parent_id === null)
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                    @if(count($category->childrenRecursive) > 0)
+                                                        @include('admin.categories.child_select', ['children' => $category->childrenRecursive, 'prefix' => '---'])
+                                                    @endif
+                                                @endif
+                                            @endforeach
                                         </select>
                                     </div>
                                     <!-- End .select-custom -->
@@ -186,7 +178,7 @@
                             @endif
                         </a>
 
-                        <a href="wishlist.html" class="header-icon"><i class="icon-wishlist-2"></i></a>
+                        <a href="{{route('wishlist')}}" class="header-icon"><i class="icon-wishlist-2"></i></a>
 
                         <div class="dropdown cart-dropdown">
                             <a href="#" title="Cart" class="dropdown-toggle dropdown-arrow cart-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
@@ -204,77 +196,35 @@
                                     <!-- End .dropdown-cart-header -->
 
                                     <div class="dropdown-cart-products">
+                                        @foreach ($cart->list() as $key => $value)
                                         <div class="product">
                                             <div class="product-details">
                                                 <h4 class="product-title">
-                                                    <a href="demo1-product.html">Ultimate 3D Bluetooth Speaker</a>
+                                                    <a href="demo1-product.html">{{$value['name']}}</a>
                                                 </h4>
 
                                                 <span class="cart-product-info">
-                                                    <span class="cart-product-qty">1</span> × $99.00
+                                                    <span class="cart-product-qty">{{$value['quantity']}}</span> x {{number_format($value['price'])}} VND
                                                 </span>
                                             </div>
                                             <!-- End .product-details -->
 
                                             <figure class="product-image-container">
                                                 <a href="demo1-product.html" class="product-image">
-                                                    <img src="{{asset('fe-asset')}}/assets/images/products/product-1.jpg" alt="product" width="80" height="80">
+                                                    <img src="{{asset('storage/images')}}/{{$value['image']}}" alt="product" width="50">
                                                 </a>
 
                                                 <a href="#" class="btn-remove" title="Remove Product"><span>×</span></a>
                                             </figure>
                                         </div>
-                                        <!-- End .product -->
-
-                                        <div class="product">
-                                            <div class="product-details">
-                                                <h4 class="product-title">
-                                                    <a href="demo1-product.html">Brown Women Casual HandBag</a>
-                                                </h4>
-
-                                                <span class="cart-product-info">
-                                                    <span class="cart-product-qty">1</span> × $35.00
-                                                </span>
-                                            </div>
-                                            <!-- End .product-details -->
-
-                                            <figure class="product-image-container">
-                                                <a href="demo1-product.html" class="product-image">
-                                                    <img src="{{asset('fe-asset')}}/assets/images/products/product-2.jpg" alt="product" width="80" height="80">
-                                                </a>
-
-                                                <a href="#" class="btn-remove" title="Remove Product"><span>×</span></a>
-                                            </figure>
-                                        </div>
-                                        <!-- End .product -->
-
-                                        <div class="product">
-                                            <div class="product-details">
-                                                <h4 class="product-title">
-                                                    <a href="demo1-product.html">Circled Ultimate 3D Speaker</a>
-                                                </h4>
-
-                                                <span class="cart-product-info">
-                                                    <span class="cart-product-qty">1</span> × $35.00
-                                                </span>
-                                            </div>
-                                            <!-- End .product-details -->
-
-                                            <figure class="product-image-container">
-                                                <a href="demo1-product.html" class="product-image">
-                                                    <img src="{{asset('fe-asset')}}/assets/images/products/product-3.jpg" alt="product" width="80" height="80">
-                                                </a>
-                                                <a href="#" class="btn-remove" title="Remove Product"><span>×</span></a>
-                                            </figure>
-                                        </div>
-                                        <!-- End .product -->
+                                        @endforeach
                                     </div>
                                     <!-- End .cart-product -->
 
                                     <div class="dropdown-cart-total">
-                                        <span>SUBTOTAL:</span>
+                                        <span>TOTAL:</span>
 
-                                        <span class="cart-total-price float-right">$134.00</span>
+                                        <span class="cart-total-price float-right">{{number_format($cart->getTotalPrice())}} VND</span>
                                     </div>
                                     <!-- End .dropdown-cart-total -->
 
@@ -326,13 +276,13 @@
                                 <h4 class="widget-title mb-1 pb-1">Contact Info</h4>
                                 <ul class="contact-info m-b-4">
                                     <li>
-                                        <span class="contact-info-label">Address:</span>123 Street Name, City, England
+                                        <span class="contact-info-label">Address:</span>503 Xuân Phương, Nam Từ Liêm, Hà Nội
                                     </li>
                                     <li>
                                         <span class="contact-info-label">Phone:</span><a href="tel:">(123) 456-7890</a>
                                     </li>
                                     <li>
-                                        <span class="contact-info-label">Email:</span> <a href="https://portotheme.com/cdn-cgi/l/email-protection#adc0ccc4c1edc8d5ccc0ddc1c883cec2c0"><span class="__cf_email__" data-cfemail="472a262e2b07223f262a372b226924282a">[email&#160;protected]</span></a>
+                                        <span class="contact-info-label">Email:</span> <a href=""><span class="__cf_email__" data-cfemail="472a262e2b07223f262a372b226924282a">lavansang1264@gmail.com</span></a>
                                     </li>
                                     <li>
                                         <span class="contact-info-label">Working Days/Hours:</span> Mon - Sun / 9:00 AM - 8:00 PM
@@ -437,100 +387,19 @@
             <span class="mobile-menu-close"><i class="fa fa-times"></i></span>
             <nav class="mobile-nav">
                 <ul class="mobile-menu menu-with-icon">
-                    <li><a href="demo1.html"><i class="icon-home"></i>Home</a></li>
-                    <li>
-                        <a href="demo1-shop.html" class="sf-with-ul"><i class="sicon-badge"></i>Categories</a>
-                        <ul>
-                            <li><a href="category.html">Full Width Banner</a></li>
-                            <li><a href="category-banner-boxed-slider.html">Boxed Slider Banner</a></li>
-                            <li><a href="category-banner-boxed-image.html">Boxed Image Banner</a></li>
-                            <li><a href="https://www.portotheme.com/html/porto_ecommerce/category-sidebar-left.html">Left Sidebar</a></li>
-                            <li><a href="category-sidebar-right.html">Right Sidebar</a></li>
-                            <li><a href="category-off-canvas.html">Off Canvas Filter</a></li>
-                            <li><a href="category-horizontal-filter1.html">Horizontal Filter 1</a></li>
-                            <li><a href="category-horizontal-filter2.html">Horizontal Filter 2</a></li>
-                            <li><a href="#">List Types</a></li>
-                            <li><a href="category-infinite-scroll.html">Ajax Infinite Scroll<span
-                                        class="tip tip-new">New</span></a></li>
-                            <li><a href="category.html">3 Columns Products</a></li>
-                            <li><a href="category-4col.html">4 Columns Products</a></li>
-                            <li><a href="category-5col.html">5 Columns Products</a></li>
-                            <li><a href="category-6col.html">6 Columns Products</a></li>
-                            <li><a href="category-7col.html">7 Columns Products</a></li>
-                            <li><a href="category-8col.html">8 Columns Products</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="demo1-product.html" class="sf-with-ul"><i class="sicon-basket"></i>Products</a>
-                        <ul>
-                            <li>
-                                <a href="#" class="nolink">PRODUCT PAGES</a>
-                                <ul>
-                                    <li><a href="product.html">SIMPLE PRODUCT</a></li>
-                                    <li><a href="product-variable.html">VARIABLE PRODUCT</a></li>
-                                    <li><a href="product.html">SALE PRODUCT</a></li>
-                                    <li><a href="product.html">FEATURED & ON SALE</a></li>
-                                    <li><a href="product-sticky-info.html">WIDTH CUSTOM TAB</a></li>
-                                    <li><a href="product-sidebar-left.html">WITH LEFT SIDEBAR</a></li>
-                                    <li><a href="product-sidebar-right.html">WITH RIGHT SIDEBAR</a></li>
-                                    <li><a href="product-addcart-sticky.html">ADD CART STICKY</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#" class="nolink">PRODUCT LAYOUTS</a>
-                                <ul>
-                                    <li><a href="product-extended-layout.html">EXTENDED LAYOUT</a></li>
-                                    <li><a href="product-grid-layout.html">GRID IMAGE</a></li>
-                                    <li><a href="product-full-width.html">FULL WIDTH LAYOUT</a></li>
-                                    <li><a href="product-sticky-info.html">STICKY INFO</a></li>
-                                    <li><a href="product-sticky-both.html">LEFT & RIGHT STICKY</a></li>
-                                    <li><a href="product-transparent-image.html">TRANSPARENT IMAGE</a></li>
-                                    <li><a href="product-center-vertical.html">CENTER VERTICAL</a></li>
-                                    <li><a href="#">BUILD YOUR OWN</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#" class="sf-with-ul"><i class="sicon-envelope"></i>Pages</a>
-                        <ul>
-                            <li>
-                                <a href="wishlist.html">Wishlist</a>
-                            </li>
-                            <li>
-                                <a href="cart.html">Shopping Cart</a>
-                            </li>
-                            <li>
-                                <a href="checkout.html">Checkout</a>
-                            </li>
-                            <li>
-                                <a href="dashboard.html">Dashboard</a>
-                            </li>
-                            <li>
-                                <a href="login.html">Login</a>
-                            </li>
-                            <li>
-                                <a href="forgot-password.html">Forgot Password</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li><a href="blog.html"><i class="sicon-book-open"></i>Blog</a></li>
-                    <li><a href="demo1-about.html"><i class="sicon-users"></i>About Us</a></li>
-                </ul>
-
-                <ul class="mobile-menu menu-with-icon mt-2 mb-2">
-                    <li class="border-0">
-                        <a href="#" target="_blank"><i class="sicon-star"></i>Buy Porto!<span
-                                class="tip tip-hot">Hot</span></a>
-                    </li>
+                    <li><a href="{{route('index')}}"><i class="icon-home"></i>Home</a></li>
+                    <li><a href="{{route('wishlist')}}"><i class="icon-wishlist-2"></i>Wishlist</a></li>
+                    <li><a href="{{route('blog')}}"><i class="sicon-book-open"></i>Blog</a></li>
+                    <li><a href="{{route('about')}}"><i class="sicon-users"></i>About Us</a></li>
+                    <li><a href="{{route('contact')}}"><i class="icon-phone-2"></i>Contact Us</a></li>
                 </ul>
 
                 <ul class="mobile-menu">
                     <li><a href="{{route('login')}}">My Account</a></li>
-                    <li><a href="demo1-contact.html">Contact Us</a></li>
-                    <li><a href="wishlist.html">My Wishlist</a></li>
+                    <li><a href="{{route('contact')}}">Contact Us</a></li>
+                    <li><a href="{{route('wishlist')}}">My Wishlist</a></li>
                     <li><a href="#">Site Map</a></li>
-                    <li><a href="cart.html">Cart</a></li>
+                    <li><a href="{{route('cart.index')}}">Cart</a></li>
                     @if ((!empty(Auth::check())))
                         <li><a href="{{route('logout')}}" class="login-link">Log Out</a></li>
                     @else
@@ -570,7 +439,7 @@
             </a>
         </div>
         <div class="sticky-info">
-            <a href="wishlist.html" class="">
+            <a href="{{route('wishlist')}}" class="">
                 <i class="icon-wishlist-2"></i>Wishlist
             </a>
         </div>
