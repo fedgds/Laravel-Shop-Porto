@@ -15,27 +15,27 @@
     <div class="col-xs-12">
         <div class="box">
           <div class="box-header">
-            <form action="" method="get" class="mb-2">
+            <form action="{{ route('product.index') }}" method="get" class="mb-2">
               <div class="row">
                 <div class="col-xs-3">
-                    <select name="id_cate" class="form-control">
+                    <select name="category_id" class="form-control">
                         <option value="0">Tất cả mục</option>
-                        {{-- @if (!empty(getAllCategories()))
+                        @if (!empty(getAllCategories()))
                             @foreach (getAllCategories() as $item)
-                                <option value="{{$item->id}}" {{request()->id_cate==$item->id?'selected':false}}>{{$item->cateName}}</option>
+                                <option value="{{$item->id}}" {{request()->category_id==$item->id?'selected':false}}>{{$item->name}}</option>
                             @endforeach
-                        @endif --}}
+                        @endif
                     </select>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-xs-2">
                     <select name="status" class="form-control">
-                        <option value="0">Tất cả trạng thái</option>
-                        <option value="active">Kích hoạt</option>
-                        <option value="inactive">Chưa kích hoạt</option>
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="0" {{request()->status=='0'?'selected':false}}>Hiển thị</option>
+                        <option value="1" {{request()->status=='1'?'selected':false}}>Ẩn</option>
                     </select>
                 </div>
-                <div class="col-xs-4">
-                    <input type="search" value="" name="keywords" class="form-control" placeholder="Search...">
+                <div class="col-xs-5">
+                  <input type="search" value="{{ request()->keywords }}" name="keywords" class="form-control" placeholder="Search...">
                 </div>
                 <div class="col-xs-2">
                     <button type="submit" class="btn btn-primary btn-block">Search</button>
@@ -85,7 +85,7 @@
                      </td>
                   </tr>
                 @empty
-                    {{-- Xử lý khi rỗng --}}
+                  {{-- Xử lý khi rỗng --}}
                   <tr>
                     <td class="text-center" colspan="8">Chưa có dữ liệu</td>
                   </tr>
@@ -93,6 +93,41 @@
               
               </tbody>
             </table>
+            {{-- pagination --}}
+            <div class="box-footer clearfix">
+              <ul class="pagination pagination-sm no-margin pull-right">
+                  @if ($products->onFirstPage())
+                      <li class="disabled"><span>Start</span></li>
+                  @else
+                      <li><a href="{{ $products->url(1) }}">Start</a></li>
+                  @endif
+          
+                  @if ($products->previousPageUrl())
+                      <li><a href="{{ $products->previousPageUrl() }}">Previous</a></li>
+                  @else
+                      <li class="disabled"><span>Previous</span></li>
+                  @endif
+          
+                  @foreach (range(1, $products->lastPage()) as $page)
+                      <li class="{{ ($products->currentPage() == $page) ? 'active' : '' }}">
+                          <a href="{{ $products->url($page) }}">{{ $page }}</a>
+                      </li>
+                  @endforeach
+          
+                  @if ($products->nextPageUrl())
+                      <li><a href="{{ $products->nextPageUrl() }}">Next</a></li>
+                  @else
+                      <li class="disabled"><span>Next</span></li>
+                  @endif
+          
+                  @if ($products->hasMorePages())
+                      <li><a href="{{ $products->url($products->lastPage()) }}">End</a></li>
+                  @else
+                      <li class="disabled"><span>End</span></li>
+                  @endif
+              </ul>
+            </div>
+            {{-- end pagination --}}
             <a href="{{route('product.trash')}}" class="btn btn-primary"><i class="fa fa-trash"></i>Thùng rác</a>
           </div>
           <!-- /.box-body -->

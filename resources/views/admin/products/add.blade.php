@@ -57,8 +57,13 @@
                         <label for="exampleInputEmail1">Chọn danh mục</label>
                         <select name="category_id" id="input" class="form-control">
                           <option value="">Chọn danh mục</option>
-                          @foreach ($categories as $item)
-                              <option value="{{$item->id}}">{{$item->name}}</option>
+                          @foreach ($categories as $category)
+                              @if ($category->parent_id === null)
+                                  <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                  @if(count($category->childrenRecursive) > 0)
+                                      @include('admin.categories.child_select', ['children' => $category->childrenRecursive, 'prefix' => '---'])
+                                  @endif
+                              @endif
                           @endforeach
                         </select>
                         @error('category_id')

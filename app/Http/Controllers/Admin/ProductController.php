@@ -17,9 +17,17 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
+        $keywords = $request->keywords;
+        $category_id = $request->category_id;
+        $status = $request->status;
+
+        $products = Product::with('category')
+                        ->search($keywords)
+                        ->filter(['category_id' => $category_id, 'status' => $status])
+                        ->paginate(5);
+
         return view('admin.products.index', compact('products'));
     }
 
@@ -54,7 +62,7 @@ class ProductController extends Controller
                 }
             }
         }catch (\Throwable $th) {
-            dd($th->getMessage());
+            // dd($th->getMessage());
             return redirect()->back()->with('error', 'Thất bại! ' . $th->getMessage());
         }
         return redirect()->route('product.index');

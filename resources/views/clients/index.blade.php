@@ -45,16 +45,6 @@
 
 <body>
     <div class="page-wrapper">
-        <div class="top-notice text-white bg-dark">
-            <div class="container text-center">
-                <h5 class="d-inline-block mb-0">Get Up to <b>40% OFF</b> New-Season Styles</h5>
-                <a href="demo1-shop.html" class="category">MEN</a>
-                <a href="demo1-shop.html" class="category">WOMEN</a>
-                <small>* Limited time only.</small>
-                <button title="Close (Esc)" type="button" class="mfp-close">×</button>
-            </div>
-            <!-- End .container -->
-        </div>
         <!-- End .top-notice -->
 
         <header class="header home">
@@ -62,24 +52,12 @@
                 <div class="container">
                     <div class="header-left">
                         <div class="header-dropdown mr-auto mr-sm-3 mr-md-0">
-                            <a href="#" class="pl-0"><i class="flag-us flag"></i>ENG</a>
+                            <a href="#" class="pl-0"><i class="flag-vn flag"></i>VN</a>
                             <div class="header-menu">
                                 <ul>
-                                    <li><a href="#"><i class="flag-us flag mr-2"></i>ENG</a>
+                                    <li><a href="#"><i class="flag-vn flag mr-2"></i>VN</a>
                                     </li>
-                                    <li><a href="#"><i class="flag-fr flag mr-2"></i>FRA</a></li>
-                                </ul>
-                            </div>
-                            <!-- End .header-menu -->
-                        </div>
-                        <!-- End .header-dropown -->
-
-                        <div class="header-dropdown ml-3 pl-1">
-                            <a href="#">USD</a>
-                            <div class="header-menu">
-                                <ul>
-                                    <li><a href="#">EUR</a></li>
-                                    <li><a href="#">USD</a></li>
+                                    <li><a href="#"><i class="flag-us flag mr-2"></i>ENG</a></li>
                                 </ul>
                             </div>
                             <!-- End .header-menu -->
@@ -96,7 +74,7 @@
                                 <ul>
                                     <li><a href="dashboard.html">My Account</a></li>
                                     <li><a href="{{route('contact')}}">Contact Us</a></li>
-                                    <li><a href="{{route('wishlist')}}">My Wishlist</a></li>
+                                    <li><a href="{{route('wishlist.index')}}">My Wishlist</a></li>
                                     <li><a href="#">Site Map</a></li>
                                     <li><a href="{{route('cart.index')}}">Cart</a></li>
                                     @if ((!empty(Auth::check())))
@@ -140,7 +118,7 @@
                     <div class="header-right w-lg-max pl-2">
                         <div class="header-search header-icon header-search-inline header-search-category w-lg-max">
                             <a href="#" class="search-toggle" role="button"><i class="icon-search-3"></i></a>
-                            <form action="#" method="get">
+                            <form action="" method="get">
                                 <div class="header-search-wrapper">
                                     <input type="search" class="form-control" name="q" id="q" placeholder="Search..." required>
                                     <div class="select-custom">
@@ -170,15 +148,26 @@
                         </div>
                         <!-- End .header-contact -->
 
-                        <a href="{{route('login')}}" class="header-icon header-icon-user">
+                        {{-- <a href="{{route('login')}}" class="header-icon header-icon-user"> --}}
                             @if ((!empty(Auth::check())))
-                                {{Auth::user()->name}}
+                                <div class="dropdown">
+                                    <button class="border-0 bg-light dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    {{ Auth::user()->name }}
+                                    <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                        @if (Auth::user()->role == 1)
+                                            <li style="font-size: 13px"><a href="{{ route('admin.index') }}">Quản trị</a></li>
+                                        @endif
+                                        <li style="font-size: 13px"><a href="{{ route('logout') }}">Đăng xuất</a></li>
+                                    </ul>
+                                </div>                     
                             @else
-                                <i class="icon-user-2"></i>
+                                <a href="{{ route('login') }}"><i class="icon-user-2" style="font-size: 24px;"></i></a>
                             @endif
-                        </a>
+                        {{-- </a> --}}
 
-                        <a href="{{route('wishlist')}}" class="header-icon"><i class="icon-wishlist-2"></i></a>
+                        <a href="{{route('wishlist.index')}}" class="header-icon"><i class="icon-wishlist-2"></i></a>
 
                         <div class="dropdown cart-dropdown">
                             <a href="#" title="Cart" class="dropdown-toggle dropdown-arrow cart-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
@@ -248,6 +237,18 @@
             <!-- End .header-middle -->
         </header>
         <!-- End .header -->
+        <nav class="main-nav w-100 d-flex justify-content-center align-items-center">
+            <ul class="menu sf-js-enabled sf-arrows" style="touch-action: pan-y;">
+                <li class="">
+                    <a href="{{route('index')}}"><i class="icon-home"></i> Home</a>
+                </li>
+                <li><a href="{{route('wishlist.index')}}"><i class="icon-wishlist-2"></i> Wishlist</a></li>
+                <li><a href="{{route('blog')}}"><i class="sicon-book-open"></i> Blog</a></li>
+                <li><a href="{{route('about')}}"><i class="sicon-users"></i> About Us</a></li>
+                <li><a href="{{route('contact')}}"><i class="icon-phone-2"></i> Contact Us</a></li>
+                <li><a href="#"><i class="icon-cat-gift"></i> Special Offer!</a></li>
+            </ul>
+        </nav>
 
         @yield('main')
         <!-- End .main -->
@@ -388,7 +389,7 @@
             <nav class="mobile-nav">
                 <ul class="mobile-menu menu-with-icon">
                     <li><a href="{{route('index')}}"><i class="icon-home"></i>Home</a></li>
-                    <li><a href="{{route('wishlist')}}"><i class="icon-wishlist-2"></i>Wishlist</a></li>
+                    <li><a href="{{route('wishlist.index')}}"><i class="icon-wishlist-2"></i>Wishlist</a></li>
                     <li><a href="{{route('blog')}}"><i class="sicon-book-open"></i>Blog</a></li>
                     <li><a href="{{route('about')}}"><i class="sicon-users"></i>About Us</a></li>
                     <li><a href="{{route('contact')}}"><i class="icon-phone-2"></i>Contact Us</a></li>
@@ -397,7 +398,7 @@
                 <ul class="mobile-menu">
                     <li><a href="{{route('login')}}">My Account</a></li>
                     <li><a href="{{route('contact')}}">Contact Us</a></li>
-                    <li><a href="{{route('wishlist')}}">My Wishlist</a></li>
+                    <li><a href="{{route('wishlist.index')}}">My Wishlist</a></li>
                     <li><a href="#">Site Map</a></li>
                     <li><a href="{{route('cart.index')}}">Cart</a></li>
                     @if ((!empty(Auth::check())))
@@ -439,7 +440,7 @@
             </a>
         </div>
         <div class="sticky-info">
-            <a href="{{route('wishlist')}}" class="">
+            <a href="{{route('wishlist.index')}}" class="">
                 <i class="icon-wishlist-2"></i>Wishlist
             </a>
         </div>

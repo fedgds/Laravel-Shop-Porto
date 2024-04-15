@@ -41,4 +41,24 @@ class Product extends Model
     {
         return $this->hasMany(ImgProduct::class);
     }
+    public function scopeSearch($query, $keywords)
+    {
+        if ($keywords) {
+            return $query->where('name', 'like', '%' . $keywords . '%')
+                        ->orWhere('description', 'like', '%' . $keywords . '%');
+        }
+        return $query;
+    }
+
+    public function scopeFilter($query, $filters)
+    {
+        if (isset($filters['category_id']) && $filters['category_id'] != '0') {
+            $query->where('category_id', $filters['category_id']);
+        }
+        if (isset($filters['status']) && $filters['status'] != '0') {
+            $status = $filters['status'] == 'active' ? 1 : 0;
+            $query->where('status', $status);
+        }
+        return $query;
+    }
 }

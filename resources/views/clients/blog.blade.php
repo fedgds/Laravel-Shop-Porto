@@ -4,7 +4,7 @@
     <nav aria-label="breadcrumb" class="breadcrumb-nav">
         <div class="container">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="demo4.html"><i class="icon-home"></i></a></li>
+                <li class="breadcrumb-item"><a href="{{route('index')}}"><i class="icon-home"></i></a></li>
                 <li class="breadcrumb-item active" aria-current="page">Blog</li>
             </ol>
         </div><!-- End .container -->

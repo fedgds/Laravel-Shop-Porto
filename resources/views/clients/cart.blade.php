@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-8">
                 <div class="cart-table-container">
-                    <table class="table table-cart">
+                    <table class="table table-cart table-bordered text-center">
                         <thead>
                             <tr>
                                 <th class="thumbnail-col"></th>
@@ -22,7 +22,7 @@
                                 <tr class="product-row">
                                     <td>
                                         <figure class="product-image-container">
-                                            <a href="product.html" class="product-image">
+                                            <a href="" class="product-image">
                                                 <img src="{{asset('storage/images')}}/{{$value['image']}}" alt="product" width="50px">
                                             </a>
                                         </figure>

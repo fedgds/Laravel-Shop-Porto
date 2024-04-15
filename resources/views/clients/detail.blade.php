@@ -4,7 +4,7 @@
     <div class="container">
         <nav aria-label="breadcrumb" class="breadcrumb-nav">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="demo4.html"><i class="icon-home"></i></a></li>
+                <li class="breadcrumb-item"><a href="{{route('index')}}"><i class="icon-home"></i></a></li>
                 <li class="breadcrumb-item"><a href="#">Products</a></li>
             </ol>
         </nav>
@@ -18,13 +18,13 @@
             <div class="row">
                 <div class="col-lg-5 col-md-6 product-single-gallery">
                     <div class="product-slider-container">
-                        <div class="label-group">
+                        {{-- <div class="label-group">
                             <div class="product-label label-hot">HOT</div>
 
                             <div class="product-label label-sale">
                                 -16%
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="product-single-carousel owl-carousel owl-theme show-nav-hover">
                             <div class="product-item">
@@ -76,6 +76,9 @@
                         @if ($product->sale_price > 0)
                             <del class="old-price">{{number_format($product->price)}} đ</del>
                             <span class="product-price">{{number_format($product->sale_price)}} đ</span>
+                            <span class="product-label label-sale ml-2 bg-danger text-light p-1" style="border-radius: 10px">
+                                {{percent($product->price, $product->sale_price)}}%
+                            </span>
                         @else
                             <span class="product-price">{{number_format($product->price)}} đ</span>
                         @endif
@@ -107,18 +110,24 @@
                     </ul>
 
                     <div class="product-action">
-                        <form action="{{route('cart.add')}}" method="post">
-                            @csrf
-                            <input type="hidden" name="id" value="{{$product->id}}">
-                            <div class="product-single-qty">
-                                <input class="horizontal-quantity form-control" name="quantity" type="text" value="1">
-                            </div>
-                            <!-- End .product-single-qty -->
-    
-                            <button type="submit" class="btn btn-dark mr-2" title="Add to Cart">Add to Cart</button>
-                        </form>
-                        
-                        <a href="cart.html" class="btn btn-gray view-cart d-none">View cart</a>
+                        <div class="d-flex">
+                            <form action="{{route('cart.add')}}" method="post">
+                                @csrf
+                                <input type="hidden" name="id" value="{{$product->id}}">
+                                <div class="product-single-qty">
+                                    <input class="horizontal-quantity form-control" name="quantity" type="text" value="1">
+                                </div>
+                                <!-- End .product-single-qty -->
+        
+                                <button type="submit" class="btn btn-dark mr-2" title="Add to Cart">Add to Cart</button>
+                            </form>
+                        </div>
+                            <form action="{{route('wishlist.add')}}" method="post">
+                                @csrf
+                                <input type="hidden" name="id" value="{{$product->id}}">
+                                {{-- <a href="wishlist.html" class="btn-icon-wish add-wishlist" title="Add to Wishlist"><i class="icon-wishlist-2"></i><span>Add to Wishlist</span></a> --}}
+                                <button type="submit" class="btn btn-primary p-3" style="border-radius: 20px" title="Add to Wishlist"><i class="icon-heart"></i>Add to Wishlist</button>
+                            </form>
                     </div>
                     <!-- End .product-action -->
 
@@ -135,10 +144,6 @@
                             <a href="#" class="social-icon social-mail icon-mail-alt" target="_blank" title="Mail"></a>
                         </div>
                         <!-- End .social-icons -->
-
-                        <a href="wishlist.html" class="btn-icon-wish add-wishlist" title="Add to Wishlist"><i
-                                class="icon-wishlist-2"></i><span>Add to
-                                Wishlist</span></a>
                     </div>
                     <!-- End .product single-share -->
                 </div>
@@ -386,11 +391,11 @@
                         <a href="{{route('detail',$item->slug)}}">
                             <img src="{{asset('storage/images')}}/{{$item->image}}" width="280" height="280" alt="product">
                         </a>
-                        <div class="label-group">
-                            <div class="product-label label-hot">HOT</div>
-                            <div class="product-label label-sale">-20%</div>
-                        </div>
                     </figure>
+                    <div class="label-group">
+                        <div class="product-label label-hot">HOT</div>
+                        <div class="product-label label-sale">{{percent($item->price, $item->sale_price)}}%</div>
+                    </div>
                     <div class="product-details">
                         <div class="category-list">
                             <a href="category.html" class="product-category">{{$item->category->name}}</a>
@@ -416,14 +421,16 @@
                             @endif
                         </div>
                         <!-- End .price-box -->
-                        <div class="product-action">
-                            <a href="wishlist.html" title="Wishlist" class="btn-icon-wish"><i
-                                    class="icon-heart"></i></a>
-                            <a href="{{route('detail',$item->slug)}}" class="btn-icon btn-add-cart"><i
+                        <div class="product-action d-flex">
+                            <form action="{{route('wishlist.add')}}" method="post">
+                                @csrf
+                                <input type="hidden" name="id" value="{{$item->id}}">
+                                <button type="submit" class="border-0 bg-light" title="Add to Wishlist"><i class="icon-heart"></i></button>
+                            </form>
+                            {{-- <a href="{{route('detail',$item->slug)}}" class="btn-icon btn-add-cart"><i
                                     class="fa fa-arrow-right"></i><span>SELECT
-                                    OPTIONS</span></a>
-                            <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View"><i
-                                    class="fas fa-external-link-alt"></i></a>
+                                    OPTIONS</span></a> --}}
+                            {{-- <a href="{{route('detail',$item->slug)}}" class="border-0 bg-light" title="Quick View"><i class="fas fa-external-link-alt"></i></a> --}}
                         </div>
                     </div>
                     <!-- End .product-details -->

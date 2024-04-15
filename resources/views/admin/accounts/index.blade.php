@@ -1,10 +1,10 @@
 @extends('admin.master')
-@section('title', 'Quản lý danh mục')
+@section('title', 'Quản lý tài khoản')
 @section('main-content')
 <div class="content-wrapper">
   <section class="content-header">
     <h1>
-      Quản lý danh mục
+      Quản lý tài khoản
     </h1>
   </section>
 
@@ -25,31 +25,28 @@
               <tbody>
                 <tr>
                   <th>STT</th>
-                  <th>Tên danh mục</th>
-                  <th>Danh mục cha</th>
+                  <th>Tên tài khoản</th>
+                  <th>Email</th>
                   <th>Ngày tạo</th>
-                  <th>Ngày sửa</th>
-                  <th>Trạng thái</th>
-                  <th colspan="2">Tùy chọn</th>
+                  <th>Vai trò</th>
+                  <th>Tùy chọn</th>
                 </tr>
-                @forelse ($categories as $item)
+                @forelse ($accounts as $item)
                   <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>{{$item->name}}</td>
-                    <td>{{$item->parent_id}}</td>
+                    <td>{{$item->email}}</td>
                     <td>{{$item->created_at}}</td>
-                    <td>{{$item->updated_at}}</td>
-                    <td>{!!$item->status ? '<span class="label label-success">Hiển thị</span>' : '<span class="label label-warning">Ẩn</span>'!!}</td>
-                    <td>
-                      <a href="{{route('category.edit', $item)}}" class="btn btn-success">Sửa</a>
-                     </td>
-                     <td>
-                      <form action="{{route('category.destroy', $item)}}" method="POST">
-                        @csrf
-                        @method("DELETE")
-                        <button onclick="return confirm('Bạn có chắc muốn xóa?')" type="submit" class="btn btn-danger">Xóa</button>
-                      </form>
-                     </td>
+                    <td>{!!$item->role ? '<span class="label label-success">Admin</span>' : '<span class="label label-warning">Người dùng</span>'!!}</td>
+                    @if ($item->role != 1)
+                        <td>
+                        <form action="{{route('category.destroy', $item)}}" method="POST">
+                          @csrf
+                          @method("DELETE")
+                          <button onclick="return confirm('Bạn có chắc muốn xóa?')" type="submit" class="btn btn-danger">Xóa</button>
+                        </form>
+                       </td>
+                    @endif
                   </tr>
                 @empty
                     {{-- Xử lý khi rỗng --}}
@@ -60,8 +57,6 @@
               
               </tbody>
             </table>
-            <a href="{{route('category.create')}}" class="btn btn-success">+Thêm mới danh mục</a>
-            <a href="{{route('category.trash')}}" class="btn btn-primary"><i class="fa fa-trash"></i>Thùng rác</a>
           </div>
           <!-- /.box-body -->
         </div>

@@ -14,9 +14,13 @@ class HomeController extends Controller
         ])->get();
 
         $newProduct = Product::orderBy('created_at', 'desc')->where('status',1)->take(3)->get();
+
+        $lowPrice = Product::orderBy('sale_price', 'asc')->where('status',1)->take(3)->get();
+
+        $highPrice = Product::orderBy('sale_price', 'desc')->where('status',1)->take(3)->get();
         // dd($newProduct);
 
-        return view('clients.home', compact('featuredProduct', 'newProduct'));
+        return view('clients.home', compact('featuredProduct', 'newProduct', 'lowPrice', 'highPrice'));
     }
     public function detail($slug){
         $product = Product::where('slug', $slug)->first();
@@ -32,8 +36,8 @@ class HomeController extends Controller
 
         return view('clients.detail',compact('product', 'related', 'newProduct', 'featuredProduct'));
     }
-    public function wishList(){
-        return view('clients.wishlist');
+    public function categoryProduct() {
+
     }
     public function blog(){
         return view('clients.blog');

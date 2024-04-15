@@ -72,7 +72,6 @@
                       <div class="form-group">
                         <label for="exampleInputEmail1">Chọn danh mục</label>
                         <select name="category_id" id="input" class="form-control">
-                          <option value="">Chọn danh mục</option>
                           @foreach ($categories as $item)
                               <option value="{{$item->id}}" {{$product->category_id == $item->id ? 'selected':false}}>{{$item->name}}</option>
                           @endforeach

@@ -1,125 +1,57 @@
 @extends('clients.index')
 @section('main')
 <main class="main">
-    <div class="page-header">
-        <div class="container d-flex flex-column align-items-center">
-            <nav aria-label="breadcrumb" class="breadcrumb-nav">
-                <div class="container">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="demo4.html">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">
-                            Wishlist
-                        </li>
-                    </ol>
-                </div>
-            </nav>
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{route('index')}}"><i class="icon-home"></i></a></li>
+                <li class="breadcrumb-item active" aria-current="page">Wishlist</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav>
 
-            <h1>Wishlist</h1>
-        </div>
-    </div>
-
-    <div class="container">
+    <div class="container mb-5">
         <div class="wishlist-title">
-            <h2 class="p-2">My wishlist on Porto Shop 4</h2>
+            <h2 class="p-2">My wishlist</h2>
         </div>
         <div class="wishlist-table-container">
-            <table class="table table-wishlist mb-0">
+            <table class="table table-wishlist mb-0 table-bordered text-center">
                 <thead>
                     <tr>
                         <th class="thumbnail-col"></th>
                         <th class="product-col">Product</th>
                         <th class="price-col">Price</th>
-                        <th class="status-col">Stock Status</th>
                         <th class="action-col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="product-row">
-                        <td>
-                            <figure class="product-image-container">
-                                <a href="product.html" class="product-image">
-                                    <img src="{{asset('fe-asset')}}/assets/images/products/product-4.jpg" alt="product" width="120px">
-                                </a>
-
-                                <a href="#" class="btn-remove icon-cancel" title="Remove Product"></a>
-                            </figure>
-                        </td>
-                        <td>
-                            <h5 class="product-title">
-                                <a href="product.html">Men Watch</a>
-                            </h5>
-                        </td>
-                        <td class="price-box">$17.90</td>
-                        <td>
-                            <span class="stock-status">In stock</span>
-                        </td>
-                        <td class="action">
-                            <a href="ajax/product-quick-view.html" class="btn btn-quickview mt-1 mt-md-0"
-                                title="Quick View">Quick
-                                View</a>
-                            <button class="btn btn-dark btn-add-cart product-type-simple btn-shop">
-                                ADD TO CART
-                            </button>
-                        </td>
-                    </tr>
-
-                    <tr class="product-row">
-                        <td>
-                            <figure class="product-image-container">
-                                <a href="product.html" class="product-image">
-                                    <img src="{{asset('fe-asset')}}/assets/images/products/product-5.jpg" alt="product" width="120px">
-                                </a>
-
-                                <a href="#" class="btn-remove icon-cancel" title="Remove Product"></a>
-                            </figure>
-                        </td>
-                        <td>
-                            <h5 class="product-title">
-                                <a href="product.html">Men Cap</a>
-                            </h5>
-                        </td>
-                        <td class="price-box">$17.90</td>
-                        <td>
-                            <span class="stock-status">In stock</span>
-                        </td>
-                        <td class="action">
-                            <a href="ajax/product-quick-view.html" class="btn btn-quickview mt-1 mt-md-0"
-                                title="Quick View">Quick
-                                View</a>
-                            <a href="product.html" class="btn btn-dark btn-add-cart btn-shop">
-                                SELECT OPTION
-                            </a>
-                        </td>
-                    </tr>
-
-                    <tr class="product-row">
-                        <td>
-                            <figure class="product-image-container">
-                                <a href="product.html" class="product-image">
-                                    <img src="{{asset('fe-asset')}}/assets/images/products/product-6.jpg" alt="product" width="120px">
-                                </a>
-
-                                <a href="#" class="btn-remove icon-cancel" title="Remove Product"></a>
-                            </figure>
-                        </td>
-                        <td>
-                            <h5 class="product-title">
-                                <a href="product.html">Men Black Gentle Belt</a>
-                            </h5>
-                        </td>
-                        <td class="price-box">$17.90</td>
-                        <td>
-                            <span class="stock-status">In stock</span>
-                        </td>
-                        <td class="action">
-                            <a href="ajax/product-quick-view.html" class="btn btn-quickview mt-1 mt-md-0"
-                                title="Quick View">Quick
-                                View</a>
-                            <a href="product.html" class="btn btn-dark btn-add-cart btn-shop">
-                                SELECT OPTION
-                            </a>
-                        </td>
-                    </tr>
+                    @foreach ($wishlist->list() as $key => $value)
+                        <form action="{{route('cart.add')}}" method="post">
+                            @csrf
+                            <input type="hidden" name="id" value="{{$value['productId']}}">
+                            <input type="hidden" name="quantity" value="1">
+                            <tr class="product-row">
+                                <td>
+                                    <figure class="product-image-container">
+                                        <a href="" class="product-image">
+                                            <img src="{{asset('storage/images')}}/{{$value['image']}}" alt="product" width="50px">
+                                        </a>
+                                    </figure>
+                                </td>
+                                <td>
+                                    <h5 class="product-title">
+                                        <a href="">{{$value['name']}}</a>
+                                    </h5>
+                                </td>
+                                <td class="price-box">{{number_format($value['price'])}} VND</td>
+                                
+                                <td class="action">
+                                    <button type="submit" class="btn btn-dark mr-2" title="Add to Cart">Add to Cart</button>
+                                </td>
+                            </tr> 
+                        </form>
+                    @endforeach
+                    
                 </tbody>
             </table>
         </div><!-- End .cart-table-container -->
